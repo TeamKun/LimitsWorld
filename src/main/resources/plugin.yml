@@ -1,0 +1,11 @@
+name: LimitsWorld
+version: 1.0
+main: net.kunmc.lab.limitsworld.LimitsWorldPlugin
+api-version: 1.16
+author: stcYps
+website: https://github.com/TeamKun/LimitsWorld
+commands:
+  summons:
+    description: LimitsWorldPlugin Main Command
+    usage: /limits <引数>
+    permission: op
