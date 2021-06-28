@@ -15,6 +15,10 @@ class EventListener: Listener {
     @EventHandler
     fun onAdvancement(e: PlayerAdvancementDoneEvent) {
         if(Manager.isEnable) {
+            if(e.advancement.key.key.startsWith("recipes")) {
+                return
+            }
+            e.player.sendMessage("" + e.advancement.key.key)
             val wb: WorldBorder = Manager.world!!.worldBorder
             wb.setSize(wb.size + (config.getInt("size") * 2), 1)
         }
