@@ -15,7 +15,6 @@ class EventListener: Listener {
     @EventHandler
     fun onAdvancement(e: PlayerAdvancementDoneEvent) {
         if(Manager.isEnable) {
-            e.player.sendMessage("" + e.advancement)
             val wb: WorldBorder = Manager.world!!.worldBorder
             wb.setSize(wb.size + (config.getInt("size") * 2), 1)
         }
