@@ -33,6 +33,9 @@ class CommandListener: CommandExecutor {
             "size" -> {
                 size(sender, args)
             }
+            "tagMode" -> {
+                tagMode(sender, args)
+            }
             "showConfig" -> {
                 showConfig(sender)
             }
@@ -86,7 +89,7 @@ class CommandListener: CommandExecutor {
         wb.damageBuffer = 0.0
         wb.warningDistance = 0
 
-        Manager.world!!.spawnLocation = p.location
+        Manager.centerLocation = p.location
 
         sender.sendMessage("" + ChatColor.GREEN + "ワールドボーダーの設定が完了しました")
     }
@@ -125,9 +128,35 @@ class CommandListener: CommandExecutor {
         }
     }
 
+    // タグ付けされたプレイヤーを対象にするモードにするか
+    private fun tagMode(sender: CommandSender, args: Array<out String>) {
+        if(args.size != 2) {
+            sender.sendMessage("" + ChatColor.RED + "error: 引数の数が不正です")
+            return
+        }
+
+        if((args[1] == "on") && modeCheck(true)) {
+            Manager.tagMode = true
+            sender.sendMessage("" + ChatColor.GREEN + "タグ付けされたプレイヤーが対象になりました")
+        }
+        else if((args[1] == "off") && modeCheck(false)) {
+            Manager.tagMode = false
+            sender.sendMessage("" + ChatColor.GREEN + "プレイヤー全員が対象になりました")
+        }
+        else {
+            sender.sendMessage(
+                "" + ChatColor.RED + "error: 不正な引数が入力されました\n"+
+                "" + ChatColor.RED + "on/off以外が入力されたか、すでに有効化/無効化されています"
+            )
+        }
+        return
+    }
+
     // 設定値の確認
     private fun showConfig(sender: CommandSender) {
         sender.sendMessage("ワールドボーダーの拡張サイズ: ${config.get("size")}")
+        sender.sendMessage("現在" + getTagPlayers().size + "人がタグ付けされています")
+        sender.sendMessage("" + getTagPlayers())
     }
 
     // コンフィグの再読み込み
@@ -153,5 +182,23 @@ class CommandListener: CommandExecutor {
             return false
         }
         return true
+    }
+
+    // 現在のタグモードの確認
+    private fun modeCheck(bool: Boolean): Boolean {
+        if((bool == Manager.tagMode) || (!bool == !Manager.tagMode))
+            return false
+        return true
+    }
+
+    // limitタグがついているプレイヤーの取得
+    private fun getTagPlayers(): MutableList<String> {
+        val list = mutableListOf<String>()
+        Bukkit.getOnlinePlayers().forEach {
+            if(it.scoreboardTags.contains("limit")) {
+                list.add(it.name)
+            }
+        }
+        return list
     }
 }

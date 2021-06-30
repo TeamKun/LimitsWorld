@@ -15,7 +15,6 @@ class LimitsWorldPlugin: JavaPlugin() {
         // config.ymlがない場合は生成する
         saveDefaultConfig()
 
-        logger.info("起動しました")
         getCommand("limits")?.setExecutor(CommandListener())
         getCommand("limits")?.tabCompleter = TabCompleter()
         server.pluginManager.registerEvents(EventListener(), this)

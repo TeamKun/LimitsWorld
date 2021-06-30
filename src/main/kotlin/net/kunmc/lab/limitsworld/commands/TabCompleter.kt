@@ -8,7 +8,7 @@ class TabCompleter: TabCompleter {
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String>? {
         var result: MutableList<String> = mutableListOf()
         if(args.size == 1) {
-            result.addAll(listOf("set", "clear", "size", "showConfig", "reloadConfig"))
+            result.addAll(listOf("set", "clear", "size","tagMode", "showConfig", "reloadConfig"))
             result = result.filter {
                 it.startsWith(args[0])
             }.toMutableList()
@@ -20,6 +20,13 @@ class TabCompleter: TabCompleter {
         else if(args.size == 2 && args[0] == "size") {
             result.clear()
             result.add("<拡張サイズ(整数)>")
+        }
+        else if(args.size == 2 && args[0] == "tagMode") {
+            result.clear()
+            result.addAll(listOf("on", "off"))
+            result = result.filter {
+                it.startsWith(args[1])
+            }.toMutableList()
         }
         else {
             result.clear()
